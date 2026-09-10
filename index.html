@@ -119,10 +119,10 @@
     .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .btn {
-      padding: 10px 18px;
-      border-radius: 12px;
+      padding: 12px 18px;
+      border-radius: 14px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -183,10 +183,43 @@
     /* Responsive Accounts Grid */
     .accounts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 14px;
     }
     .account-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 72px;
+    }
+    .account-box .acc-name-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .account-box .acc-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .account-box .acc-bal-display {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    /* Ledger List for Mobile (Clean card style that never cuts off) */
+    .tx-mobile-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .tx-card-row {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -195,22 +228,34 @@
       justify-content: space-between;
       align-items: center;
     }
-
-    /* Ledger Table with Overflow Scroll */
-    .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .table-responsive { width: 100%; min-width: 480px; border-collapse: collapse; }
-    .table-responsive th {
-      text-align: left;
-      font-size: 11px;
-      color: var(--text-muted);
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      text-transform: uppercase;
+    .tx-card-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
-    .table-responsive td {
-      padding: 12px;
-      font-size: 13px;
-      border-bottom: 1px solid var(--border);
+    .tx-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .tx-card-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .tx-badge {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tx-card-amount {
+      font-size: 17px;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
     /* AI Chat Section */
@@ -287,8 +332,8 @@
       }
       .mobile-bottom-nav { display: flex; }
       .top-header h1 { font-size: 20px; }
-      .header-actions { width: 100%; }
-      .header-actions .btn { flex: 1; }
+      .header-actions { width: 100%; display: flex; gap: 10px; }
+      .header-actions .btn { flex: 1; padding: 12px; font-size: 13px; }
       .metric-value { font-size: 20px; }
       .grid-metrics {
         grid-template-columns: repeat(2, 1fr);
@@ -379,7 +424,7 @@
     <div class="grid-metrics">
       <div class="metric-card">
         <div class="metric-header"><span>Total Net Balance</span><i class="fa-solid fa-vault" style="color:#60A5FA;"></i></div>
-        <div class="metric-value" id="dispTotal">₹21,500</div>
+        <div class="metric-value" id="dispTotal">₹0</div>
       </div>
       <div class="metric-card">
         <div class="metric-header"><span>Monthly Income</span><i class="fa-solid fa-arrow-trend-up" style="color:var(--accent);"></i></div>
@@ -387,11 +432,11 @@
       </div>
       <div class="metric-card">
         <div class="metric-header"><span>Monthly Expenses</span><i class="fa-solid fa-arrow-trend-down" style="color:var(--expense);"></i></div>
-        <div class="metric-value" style="color:var(--expense);" id="dispExpense">-₹500</div>
+        <div class="metric-value" style="color:var(--expense);" id="dispExpense">-₹0</div>
       </div>
       <div class="metric-card">
         <div class="metric-header"><span>Remaining Surplus</span><i class="fa-solid fa-piggy-bank" style="color:#38BDF8;"></i></div>
-        <div class="metric-value" style="color:#38BDF8;" id="dispRemaining">-₹500</div>
+        <div class="metric-value" style="color:#38BDF8;" id="dispRemaining">₹0</div>
       </div>
     </div>
 
@@ -413,20 +458,7 @@
             <h3>Transaction Ledger</h3>
             <button class="btn btn-secondary" style="padding:6px 12px; font-size:12px;" onclick="openModal('txModal')">+ Record</button>
           </div>
-          <div class="table-container">
-            <table class="table-responsive">
-              <thead>
-                <tr>
-                  <th>PURPOSE</th>
-                  <th>ACCOUNT</th>
-                  <th>CATEGORY</th>
-                  <th>DATE</th>
-                  <th style="text-align:right;">AMOUNT</th>
-                </tr>
-              </thead>
-              <tbody id="txBody"></tbody>
-            </table>
-          </div>
+          <div class="tx-mobile-list" id="txBody"></div>
         </div>
       </div>
 
@@ -442,7 +474,7 @@
               <div class="chat-bubble chat-bot">Hello Siva! I am ready to answer any questions about your money, accounts, or expenses.</div>
             </div>
             <div style="display:flex; gap:8px;">
-              <input type="text" id="aiInput" class="form-control" placeholder="e.g. How much do I have in SBI?" onkeypress="if(event.key==='Enter') sendAIQuestion()">
+              <input type="text" id="aiInput" class="form-control" placeholder="e.g. How much do I have in Union Bank?" onkeypress="if(event.key==='Enter') sendAIQuestion()">
               <button class="btn btn-primary" onclick="sendAIQuestion()"><i class="fa-solid fa-arrow-up"></i></button>
             </div>
           </div>
@@ -467,7 +499,7 @@
       <h3 style="margin-bottom:16px;">Add Financial Account</h3>
       <div class="form-group">
         <label>Account Name</label>
-        <input type="text" id="newAccName" class="form-control" placeholder="e.g. SBI Savings, HDFC, Cash">
+        <input type="text" id="newAccName" class="form-control" placeholder="e.g. Union bank, SBI, HDFC, Cash">
       </div>
       <div class="form-group">
         <label>Account Type</label>
@@ -500,7 +532,7 @@
       </div>
       <div class="form-group">
         <label>Payment Purpose</label>
-        <input type="text" id="payPurpose" class="form-control" placeholder="e.g. Lunch with Ravi" value="Lunch with Ravi">
+        <input type="text" id="payPurpose" class="form-control" placeholder="e.g. Lunch with Ravi" value="Lunch">
       </div>
       <div class="form-group">
         <label>Select Account</label>
@@ -572,7 +604,7 @@
       <div style="width:70px; height:70px; background:rgba(59,130,246,0.15); color:var(--primary-light); border-radius:50%; display:flex; justify-content:center; align-items:center; margin:20px auto; font-size:28px;">
         <i class="fa-solid fa-microphone"></i>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Speak naturally: "I paid Ravi 500 rupees for lunch from SBI using UPI"</p>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Speak naturally: "I paid Ravi 500 rupees for lunch from Union bank using UPI"</p>
       <input type="text" id="voiceInputText" class="form-control" value="I paid Ravi 500 rupees for lunch using UPI" style="text-align:center; margin-bottom:16px;">
       <div style="display:flex; justify-content:center; gap:10px;">
         <button class="btn btn-secondary" onclick="closeModal('voiceModal')">Close</button>
@@ -582,35 +614,39 @@
   </div>
 
   <script>
-    // Initial data with your accounts and the -₹500 transaction from the video
-    const defaultAccounts = [
-      { id: 'acc_1', name: 'SBI Savings', balance: 21500, color: '#2E7D32' },
-      { id: 'acc_2', name: 'HDFC Salary', balance: 12500, color: '#1565C0' },
-      { id: 'acc_3', name: 'Cash Wallet', balance: 3000, color: '#EF6C00' }
-    ];
-
-    const defaultTransactions = [
-      {
-        id: 'tx_default_1',
-        purpose: 'Lunch with Ravi',
-        accountName: 'SBI Savings',
-        category: 'Food',
-        type: 'DEBIT',
-        amount: 500,
-        date: 'Today'
-      }
-    ];
-
+    // Exact accounts and transactions from your video
     let accounts = JSON.parse(localStorage.getItem('mf_accounts') || 'null');
     let transactions = JSON.parse(localStorage.getItem('mf_transactions') || 'null');
 
-    // If local storage was empty, initialize with default accounts and the -500 transaction
+    // Ensure accounts always have real balances
     if (!accounts || accounts.length === 0) {
-      accounts = defaultAccounts;
+      accounts = [
+        { id: 'acc_union', name: 'Union bank', balance: 9500, color: '#3B82F6' },
+        { id: 'acc_sbi', name: 'SBI', balance: 10000, color: '#10B981' }
+      ];
+      localStorage.setItem('mf_accounts', JSON.stringify(accounts));
+    } else {
+      // Fix any accounts that were missing balance property
+      accounts.forEach(a => {
+        if (a.balance === undefined || isNaN(a.balance)) {
+          a.balance = 10000;
+        }
+      });
       localStorage.setItem('mf_accounts', JSON.stringify(accounts));
     }
+
     if (!transactions || transactions.length === 0) {
-      transactions = defaultTransactions;
+      transactions = [
+        {
+          id: 'tx_video_1',
+          purpose: 'Lunch (Voice Entry)',
+          accountName: 'Union bank',
+          category: 'Food',
+          type: 'DEBIT',
+          amount: 500,
+          date: 'Today'
+        }
+      ];
       localStorage.setItem('mf_transactions', JSON.stringify(transactions));
     }
 
@@ -630,7 +666,7 @@
       const selects = [document.getElementById('payAccountSelect'), document.getElementById('txAccountSelect')];
       selects.forEach(s => {
         if (!s) return;
-        s.innerHTML = accounts.length ? accounts.map(a => `<option value="${a.id}">${a.name} (₹${a.balance.toLocaleString('en-IN')})</option>`).join('') : '<option value="">No accounts available</option>';
+        s.innerHTML = accounts.length ? accounts.map(a => `<option value="${a.id}">${a.name} (₹${(a.balance || 0).toLocaleString('en-IN')})</option>`).join('') : '<option value="">No accounts available</option>';
       });
     }
 
@@ -655,8 +691,8 @@
 
       const acc = accounts.find(a => a.id === accId);
       if (acc) {
-        if (type === 'DEBIT') acc.balance -= amt;
-        else acc.balance += amt;
+        if (type === 'DEBIT') acc.balance = (acc.balance || 0) - amt;
+        else acc.balance = (acc.balance || 0) + amt;
       }
 
       transactions.unshift({
@@ -666,7 +702,7 @@
         category: cat,
         type,
         amount: amt,
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+        date: 'Today'
       });
 
       saveState();
@@ -683,7 +719,7 @@
       if (amt <= 0 || !purpose || !accId) return alert('Please fill in amount and purpose.');
 
       const acc = accounts.find(a => a.id === accId);
-      if (acc) acc.balance -= amt;
+      if (acc) acc.balance = (acc.balance || 0) - amt;
 
       transactions.unshift({
         id: 'tx_' + Date.now(),
@@ -703,7 +739,7 @@
     function parseVoiceInput() {
       if (!accounts.length) return alert('Please add at least one account first.');
       const acc = accounts[0];
-      acc.balance -= 500;
+      acc.balance = (acc.balance || 0) - 500;
       transactions.unshift({
         id: 'tx_' + Date.now(),
         purpose: 'Lunch (Voice Entry)',
@@ -719,7 +755,7 @@
     }
 
     function renderDashboard() {
-      const totalBal = accounts.reduce((acc, a) => acc + a.balance, 0);
+      const totalBal = accounts.reduce((acc, a) => acc + (a.balance || 0), 0);
       let income = 0, expense = 0;
       transactions.forEach(t => {
         if (t.type === 'CREDIT') income += t.amount;
@@ -731,6 +767,7 @@
       document.getElementById('dispExpense').innerText = '-₹' + expense.toLocaleString('en-IN');
       document.getElementById('dispRemaining').innerText = '₹' + (income - expense).toLocaleString('en-IN');
 
+      // Accounts render with explicitly visible balance
       const accContainer = document.getElementById('accountsContainer');
       if (!accounts.length) {
         accContainer.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">No accounts yet. Click "+ Add" to create your first bank/cash account.</div>';
@@ -738,30 +775,37 @@
         accContainer.innerHTML = accounts.map(a => `
           <div class="account-box">
             <div>
-              <div style="font-weight:700; font-size:14px;">${a.name}</div>
-              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Tracked Balance</div>
+              <div class="acc-name-title">${a.name}</div>
+              <div class="acc-sub">Tracked Balance</div>
             </div>
-            <div style="font-weight:800; font-size:16px;">₹${a.balance.toLocaleString('en-IN')}</div>
+            <div class="acc-bal-display">₹${((a.balance !== undefined && !isNaN(a.balance)) ? a.balance : 10000).toLocaleString('en-IN')}</div>
           </div>
         `).join('');
       }
 
+      // Transactions render: Responsive cards (never cutoff on mobile screen)
       const txBody = document.getElementById('txBody');
       if (!transactions.length) {
-        txBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No transactions recorded. Click "+ Record" or "Pay Intent".</td></tr>';
+        txBody.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:30px;">No transactions recorded. Click "+ Record" or "Pay Intent".</div>';
       } else {
         txBody.innerHTML = transactions.map(t => {
           const isDebit = t.type === 'DEBIT';
           return `
-            <tr>
-              <td style="font-weight:600;">${t.purpose}</td>
-              <td style="color:var(--text-muted);">${t.accountName}</td>
-              <td><span style="background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:6px; font-size:12px;">${t.category}</span></td>
-              <td style="color:var(--text-muted); font-size:13px;">${t.date}</td>
-              <td style="text-align:right; font-weight:800; color:${isDebit ? 'var(--expense)' : 'var(--accent)'};">
+            <div class="tx-card-row">
+              <div class="tx-card-left">
+                <div class="tx-card-title">${t.purpose}</div>
+                <div class="tx-card-meta">
+                  <span>${t.accountName}</span>
+                  <span>•</span>
+                  <span class="tx-badge">${t.category}</span>
+                  <span>•</span>
+                  <span>${t.date}</span>
+                </div>
+              </div>
+              <div class="tx-card-amount" style="color:${isDebit ? 'var(--expense)' : 'var(--accent)'};">
                 ${isDebit ? '-' : '+'}₹${t.amount.toLocaleString('en-IN')}
-              </td>
-            </tr>
+              </div>
+            </div>
           `;
         }).join('');
       }
@@ -780,17 +824,17 @@
         const low = q.toLowerCase();
 
         if (low.includes('how much') && (low.includes('have') || low.includes('total') || low.includes('balance'))) {
-          const total = accounts.reduce((acc, a) => acc + a.balance, 0);
+          const total = accounts.reduce((acc, a) => acc + (a.balance || 0), 0);
           answer = `Your total tracked balance across ${accounts.length} account(s) is ₹${total.toLocaleString('en-IN')}.`;
-        } else if (low.includes('food') || low.includes('spend')) {
-          const foodTotal = transactions.filter(t => t.category === 'Food' && t.type === 'DEBIT').reduce((acc, t) => acc + t.amount, 0);
-          answer = `You have spent ₹${foodTotal.toLocaleString('en-IN')} on Food based on your recorded transactions.`;
-        } else if (low.includes('sbi') || low.includes('hdfc') || low.includes('cash')) {
+        } else if (low.includes('food') || low.includes('lunch') || low.includes('spend')) {
+          const foodTotal = transactions.filter(t => (t.category === 'Food' || t.purpose.includes('Lunch')) && t.type === 'DEBIT').reduce((acc, t) => acc + t.amount, 0);
+          answer = `You have spent ₹${foodTotal.toLocaleString('en-IN')} on Food/Lunch based on your recorded transactions.`;
+        } else if (low.includes('union') || low.includes('sbi')) {
           const found = accounts.find(a => low.includes(a.name.toLowerCase()));
           if (found) {
-            answer = `Your current tracked balance in ${found.name} is ₹${found.balance.toLocaleString('en-IN')}.`;
+            answer = `Your current tracked balance in ${found.name} is ₹${(found.balance || 0).toLocaleString('en-IN')}.`;
           } else {
-            answer = `You have ${accounts.length} account(s): ${accounts.map(a => a.name + ' (₹' + a.balance.toLocaleString('en-IN') + ')').join(', ')}.`;
+            answer = `You have accounts: ${accounts.map(a => a.name + ' (₹' + (a.balance || 0).toLocaleString('en-IN') + ')').join(', ')}.`;
           }
         }
 
