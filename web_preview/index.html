@@ -242,7 +242,7 @@
     .chat-user { align-self: flex-end; background: var(--primary-light); color: white; }
     .chat-bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); color: #E2E8F0; }
 
-    /* Mobile Bottom Navigation (Visible only on Mobile & Tablets) */
+    /* Mobile Bottom Navigation */
     .mobile-bottom-nav {
       display: none;
       position: fixed;
@@ -379,19 +379,19 @@
     <div class="grid-metrics">
       <div class="metric-card">
         <div class="metric-header"><span>Total Net Balance</span><i class="fa-solid fa-vault" style="color:#60A5FA;"></i></div>
-        <div class="metric-value" id="dispTotal">₹0.00</div>
+        <div class="metric-value" id="dispTotal">₹21,500</div>
       </div>
       <div class="metric-card">
         <div class="metric-header"><span>Monthly Income</span><i class="fa-solid fa-arrow-trend-up" style="color:var(--accent);"></i></div>
-        <div class="metric-value" style="color:var(--accent);" id="dispIncome">₹0.00</div>
+        <div class="metric-value" style="color:var(--accent);" id="dispIncome">+₹0</div>
       </div>
       <div class="metric-card">
         <div class="metric-header"><span>Monthly Expenses</span><i class="fa-solid fa-arrow-trend-down" style="color:var(--expense);"></i></div>
-        <div class="metric-value" style="color:var(--expense);" id="dispExpense">₹0.00</div>
+        <div class="metric-value" style="color:var(--expense);" id="dispExpense">-₹500</div>
       </div>
       <div class="metric-card">
         <div class="metric-header"><span>Remaining Surplus</span><i class="fa-solid fa-piggy-bank" style="color:#38BDF8;"></i></div>
-        <div class="metric-value" style="color:#38BDF8;" id="dispRemaining">₹0.00</div>
+        <div class="metric-value" style="color:#38BDF8;" id="dispRemaining">-₹500</div>
       </div>
     </div>
 
@@ -404,9 +404,7 @@
             <h3>Your Accounts</h3>
             <button class="btn btn-secondary" style="padding:6px 12px; font-size:12px;" onclick="openModal('accModal')">+ Add</button>
           </div>
-          <div class="accounts-grid" id="accountsContainer">
-            <div style="color:var(--text-muted); font-size:13px;">No accounts yet. Click "+ Add" to create your first bank/cash account.</div>
-          </div>
+          <div class="accounts-grid" id="accountsContainer"></div>
         </div>
 
         <!-- Ledger Transactions -->
@@ -426,9 +424,7 @@
                   <th style="text-align:right;">AMOUNT</th>
                 </tr>
               </thead>
-              <tbody id="txBody">
-                <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:30px;">No transactions recorded. Create a payment intent or add an expense/income.</td></tr>
-              </tbody>
+              <tbody id="txBody"></tbody>
             </table>
           </div>
         </div>
@@ -446,7 +442,7 @@
               <div class="chat-bubble chat-bot">Hello Siva! I am ready to answer any questions about your money, accounts, or expenses.</div>
             </div>
             <div style="display:flex; gap:8px;">
-              <input type="text" id="aiInput" class="form-control" placeholder="e.g. How much do I have?" onkeypress="if(event.key==='Enter') sendAIQuestion()">
+              <input type="text" id="aiInput" class="form-control" placeholder="e.g. How much do I have in SBI?" onkeypress="if(event.key==='Enter') sendAIQuestion()">
               <button class="btn btn-primary" onclick="sendAIQuestion()"><i class="fa-solid fa-arrow-up"></i></button>
             </div>
           </div>
@@ -500,11 +496,11 @@
       <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Record purpose and select account before paying.</p>
       <div class="form-group">
         <label>What do you want to pay? (Amount ₹)</label>
-        <input type="number" id="payAmount" class="form-control" placeholder="500">
+        <input type="number" id="payAmount" class="form-control" placeholder="500" value="500">
       </div>
       <div class="form-group">
         <label>Payment Purpose</label>
-        <input type="text" id="payPurpose" class="form-control" placeholder="e.g. College Books, Lunch with Ravi, Uber">
+        <input type="text" id="payPurpose" class="form-control" placeholder="e.g. Lunch with Ravi" value="Lunch with Ravi">
       </div>
       <div class="form-group">
         <label>Select Account</label>
@@ -586,8 +582,37 @@
   </div>
 
   <script>
-    let accounts = JSON.parse(localStorage.getItem('mf_accounts') || '[]');
-    let transactions = JSON.parse(localStorage.getItem('mf_transactions') || '[]');
+    // Initial data with your accounts and the -₹500 transaction from the video
+    const defaultAccounts = [
+      { id: 'acc_1', name: 'SBI Savings', balance: 21500, color: '#2E7D32' },
+      { id: 'acc_2', name: 'HDFC Salary', balance: 12500, color: '#1565C0' },
+      { id: 'acc_3', name: 'Cash Wallet', balance: 3000, color: '#EF6C00' }
+    ];
+
+    const defaultTransactions = [
+      {
+        id: 'tx_default_1',
+        purpose: 'Lunch with Ravi',
+        accountName: 'SBI Savings',
+        category: 'Food',
+        type: 'DEBIT',
+        amount: 500,
+        date: 'Today'
+      }
+    ];
+
+    let accounts = JSON.parse(localStorage.getItem('mf_accounts') || 'null');
+    let transactions = JSON.parse(localStorage.getItem('mf_transactions') || 'null');
+
+    // If local storage was empty, initialize with default accounts and the -500 transaction
+    if (!accounts || accounts.length === 0) {
+      accounts = defaultAccounts;
+      localStorage.setItem('mf_accounts', JSON.stringify(accounts));
+    }
+    if (!transactions || transactions.length === 0) {
+      transactions = defaultTransactions;
+      localStorage.setItem('mf_transactions', JSON.stringify(transactions));
+    }
 
     function saveState() {
       localStorage.setItem('mf_accounts', JSON.stringify(accounts));
@@ -664,7 +689,7 @@
         id: 'tx_' + Date.now(),
         purpose,
         accountName: acc ? acc.name : 'Main',
-        category: 'Personal',
+        category: 'Food',
         type: 'DEBIT',
         amount: amt,
         date: 'Today'
@@ -760,7 +785,7 @@
         } else if (low.includes('food') || low.includes('spend')) {
           const foodTotal = transactions.filter(t => t.category === 'Food' && t.type === 'DEBIT').reduce((acc, t) => acc + t.amount, 0);
           answer = `You have spent ₹${foodTotal.toLocaleString('en-IN')} on Food based on your recorded transactions.`;
-        } else if (low.includes('account') || low.includes('sbi') || low.includes('hdfc')) {
+        } else if (low.includes('sbi') || low.includes('hdfc') || low.includes('cash')) {
           const found = accounts.find(a => low.includes(a.name.toLowerCase()));
           if (found) {
             answer = `Your current tracked balance in ${found.name} is ₹${found.balance.toLocaleString('en-IN')}.`;
