@@ -3,306 +3,264 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MoneyFlow AI — Intelligent Personal Finance Portal</title>
+  <title>MoneyFlow AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #1E3A8A;
-      --primary-light: #3B82F6;
+      --bg: #090D16;
+      --surface: #121826;
+      --surface-card: #1A2234;
+      --primary: #3B82F6;
       --accent: #10B981;
       --expense: #EF4444;
-      --bg: #0B0F19;
-      --surface: #131B2E;
-      --card: #1E293B;
       --text: #F8FAFC;
       --text-muted: #94A3B8;
       --border: rgba(255, 255, 255, 0.08);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body {
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: flex;
-      flex-direction: row;
-      overflow-x: hidden;
+      justify-content: center;
     }
     
-    /* Desktop Sidebar */
-    .sidebar {
-      width: 260px;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      transition: all 0.3s;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 18px;
-      font-weight: 800;
-      color: #60A5FA;
-      margin-bottom: 32px;
-    }
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      background: var(--primary);
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-    }
-    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 16px;
-      border-radius: 12px;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .nav-btn:hover, .nav-btn.active {
-      background: var(--primary);
-      color: white;
-    }
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      background: var(--card);
-      border-radius: 16px;
-    }
-    .user-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--primary-light);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 700;
-    }
-
-    /* Main Content Area */
-    .main-content {
-      flex: 1;
-      padding: 32px 36px;
-      overflow-y: auto;
-      max-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    /* App Shell - perfectly sized for mobile while looking clean on desktop */
+    .app-shell {
       width: 100%;
-    }
-
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .top-header h1 { font-size: 24px; font-weight: 800; }
-    .top-header p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-    .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-
-    .btn {
-      padding: 12px 18px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: none;
-      transition: all 0.2s;
-    }
-    .btn-primary { background: var(--primary-light); color: white; }
-    .btn-primary:hover { background: #2563EB; }
-    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: #334155; }
-
-    /* Auto-arranging Grid Metrics */
-    .grid-metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .metric-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px 20px;
-    }
-    .metric-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .metric-value { font-size: 24px; font-weight: 800; margin-top: 8px; letter-spacing: -0.5px; }
-
-    /* Responsive Main Sections */
-    .grid-sections {
-      display: grid;
-      grid-template-columns: 2fr 1.2fr;
-      gap: 20px;
-    }
-    .section-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .section-head h3 { font-size: 16px; font-weight: 700; }
-
-    /* Responsive Accounts Grid */
-    .accounts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-    .account-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      min-height: 72px;
-    }
-    .account-box .acc-name-title {
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--text);
-    }
-    .account-box .acc-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .account-box .acc-bal-display {
-      font-weight: 800;
-      font-size: 18px;
-      color: var(--text);
-      white-space: nowrap;
-    }
-
-    /* Ledger List for Mobile (Clean card style that never cuts off) */
-    .tx-mobile-list {
+      max-width: 480px;
+      min-height: 100vh;
+      background: var(--bg);
       display: flex;
       flex-direction: column;
+      position: relative;
+      padding-bottom: 84px;
+    }
+
+    /* Top App Bar */
+    .top-bar {
+      padding: 18px 20px 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .user-greeting h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+    .user-greeting p { font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+    .top-icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .content-area {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Total Balance Card */
+    .hero-balance-card {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 12px 28px rgba(30, 58, 138, 0.4);
+    }
+    .hero-sub { font-size: 12px; color: rgba(255, 255, 255, 0.75); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .hero-amount { font-size: 34px; font-weight: 800; margin: 6px 0 16px 0; color: white; letter-spacing: -0.5px; }
+    .hero-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      gap: 8px;
+    }
+    .hero-stat-box h6 { font-size: 11px; color: rgba(255, 255, 255, 0.7); font-weight: 500; }
+    .hero-stat-box p { font-size: 14px; font-weight: 800; margin-top: 3px; white-space: nowrap; }
+    .color-income { color: #34D399; }
+    .color-expense { color: #FCA5A5; }
+    .color-surplus { color: #93C5FD; }
+
+    /* Action Buttons Bar */
+    .primary-action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-    .tx-card-row {
-      background: var(--card);
-      border: 1px solid var(--border);
+    .action-pill-btn {
+      padding: 14px;
       border-radius: 16px;
-      padding: 16px;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-intent { background: var(--primary); color: white; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35); }
+    .btn-add-acc { background: var(--surface-card); color: var(--text); border: 1px solid var(--border); }
+
+    /* Section Headers */
+    .sec-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 8px;
     }
-    .tx-card-left {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .tx-card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .tx-card-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .tx-badge {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .tx-card-amount {
-      font-size: 17px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
+    .sec-header h3 { font-size: 16px; font-weight: 800; }
+    .sec-link { font-size: 13px; color: var(--primary); font-weight: 700; cursor: pointer; }
 
-    /* AI Chat Section */
-    .ai-chat-box {
-      display: flex;
-      flex-direction: column;
-      height: 340px;
-      background: var(--card);
-      border-radius: 16px;
-      padding: 16px;
-      overflow: hidden;
-    }
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
+    /* Account Cards */
+    .accounts-vertical-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      scrollbar-width: thin;
     }
-    .chat-bubble {
-      padding: 10px 14px;
-      border-radius: 14px;
-      max-width: 88%;
-      line-height: 1.4;
+    .account-card-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .chat-user { align-self: flex-end; background: var(--primary-light); color: white; }
-    .chat-bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); color: #E2E8F0; }
+    .acc-left-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .acc-circle-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--primary);
+      font-size: 16px;
+    }
+    .acc-name-text { font-size: 15px; font-weight: 700; }
+    .acc-sub-text { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .acc-balance-text { font-size: 17px; font-weight: 800; color: var(--text); }
 
-    /* Mobile Bottom Navigation */
-    .mobile-bottom-nav {
-      display: none;
+    /* Transaction Ledger List */
+    .tx-vertical-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tx-card-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tx-left-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tx-icon-bubble {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+    }
+    .bubble-debit { background: rgba(239, 68, 68, 0.15); color: var(--expense); }
+    .bubble-credit { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+    .tx-title { font-size: 14px; font-weight: 700; }
+    .tx-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; gap: 6px; align-items: center; }
+    .tx-badge-pill { background: rgba(255, 255, 255, 0.08); padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 600; }
+    .tx-amount-val { font-size: 16px; font-weight: 800; }
+
+    /* AI Card */
+    .ai-chat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .ai-header { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: #93C5FD; margin-bottom: 10px; }
+    .ai-bubble-box {
+      background: var(--surface-card);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #E2E8F0;
+      min-height: 60px;
+      max-height: 140px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .ai-input-row { display: flex; gap: 8px; }
+    .ai-text-field {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      color: white;
+      font-size: 13px;
+      outline: none;
+    }
+    .ai-send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--primary);
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Fixed Bottom App Navigation */
+    .mobile-bottom-bar {
       position: fixed;
       bottom: 0;
-      left: 0;
-      right: 0;
-      height: 64px;
-      background: var(--surface);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      height: 68px;
+      background: rgba(18, 24, 38, 0.95);
+      backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
+      display: flex;
       justify-content: space-around;
       align-items: center;
-      z-index: 90;
-      padding: 0 8px;
+      z-index: 50;
+      padding: 0 10px;
     }
-    .mobile-nav-item {
+    .nav-tab-item {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -310,345 +268,293 @@
       font-size: 10px;
       color: var(--text-muted);
       cursor: pointer;
-      text-decoration: none;
+      font-weight: 600;
     }
-    .mobile-nav-item.active { color: var(--primary-light); font-weight: 700; }
-    .mobile-nav-item i { font-size: 18px; }
+    .nav-tab-item.active { color: var(--primary); font-weight: 700; }
+    .nav-tab-item i { font-size: 19px; }
 
-    /* Responsive Media Queries */
-    @media (max-width: 1024px) {
-      .grid-sections {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      body { flex-direction: column; }
-      .sidebar { display: none; }
-      .main-content {
-        padding: 20px 16px 84px 16px;
-        max-height: none;
-        overflow-y: visible;
-      }
-      .mobile-bottom-nav { display: flex; }
-      .top-header h1 { font-size: 20px; }
-      .header-actions { width: 100%; display: flex; gap: 10px; }
-      .header-actions .btn { flex: 1; padding: 12px; font-size: 13px; }
-      .metric-value { font-size: 20px; }
-      .grid-metrics {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      .accounts-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Modal Overlay & Card */
-    .modal-overlay {
+    /* Modals */
+    .modal-backdrop {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(4px);
       display: none;
       justify-content: center;
-      align-items: center;
+      align-items: flex-end;
       z-index: 100;
-      padding: 16px;
     }
-    .modal-overlay.active { display: flex; }
-    .modal-content {
+    .modal-backdrop.open { display: flex; }
+    .modal-sheet {
+      width: 100%;
+      max-width: 480px;
       background: var(--surface);
-      border: 1px solid var(--border);
-      width: 100%;
-      max-width: 460px;
-      border-radius: 22px;
-      padding: 24px;
-      max-height: 90vh;
-      overflow-y: auto;
+      border-top: 1px solid var(--border);
+      border-radius: 28px 28px 0 0;
+      padding: 24px 20px 32px 20px;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
     }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
-    .form-control {
+    .modal-sheet h4 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .modal-sheet p { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+    .app-input {
       width: 100%;
-      padding: 12px 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
+      padding: 13px 15px;
       border-radius: 12px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
       color: white;
       font-size: 14px;
       outline: none;
     }
+    .modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-btn-row button { flex: 1; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+    .btn-confirm { background: var(--primary); border: none; color: white; }
   </style>
 </head>
 <body>
 
-  <!-- Desktop Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
-      <span>MoneyFlow AI</span>
-    </div>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="top-bar">
+      <div class="user-greeting">
+        <h2>Good evening, Siva 👋</h2>
+        <p><i class="fa-solid fa-shield-halved"></i> MoneyFlow AI Active</p>
+      </div>
+      <div class="top-icon-btn" onclick="openModal('voiceModal')">
+        <i class="fa-solid fa-microphone"></i>
+      </div>
+    </header>
 
-    <ul class="nav-list">
-      <li class="nav-btn active"><i class="fa-solid fa-chart-pie"></i> Dashboard</li>
-      <li class="nav-btn" onclick="openModal('txModal')"><i class="fa-solid fa-receipt"></i> Add Transaction</li>
-      <li class="nav-btn" onclick="openModal('payModal')"><i class="fa-solid fa-paper-plane"></i> Payment Intent</li>
-      <li class="nav-btn" onclick="openModal('accModal')"><i class="fa-solid fa-building-columns"></i> Add Account</li>
-      <li class="nav-btn" onclick="openModal('voiceModal')"><i class="fa-solid fa-microphone"></i> Voice Entry</li>
-    </ul>
-
-    <div class="user-profile">
-      <div class="user-avatar">S</div>
-      <div>
-        <div style="font-weight:700; font-size:14px;" id="userName">Siva</div>
-        <div style="font-size:12px; color:var(--accent);"><i class="fa-solid fa-shield-halved"></i> Verified Ledger</div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Main View -->
-  <main class="main-content">
-    <div class="top-header">
-      <div>
-        <h1>Financial Overview</h1>
-        <p>Record your reason before you pay. Track every rupee across your accounts.</p>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-secondary" onclick="openModal('accModal')"><i class="fa-solid fa-plus"></i> New Account</button>
-        <button class="btn btn-primary" onclick="openModal('payModal')"><i class="fa-solid fa-paper-plane"></i> Pay Intent</button>
-      </div>
-    </div>
-
-    <!-- Auto-Arranging Metrics Grid -->
-    <div class="grid-metrics">
-      <div class="metric-card">
-        <div class="metric-header"><span>Total Net Balance</span><i class="fa-solid fa-vault" style="color:#60A5FA;"></i></div>
-        <div class="metric-value" id="dispTotal">₹0</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-header"><span>Monthly Income</span><i class="fa-solid fa-arrow-trend-up" style="color:var(--accent);"></i></div>
-        <div class="metric-value" style="color:var(--accent);" id="dispIncome">+₹0</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-header"><span>Monthly Expenses</span><i class="fa-solid fa-arrow-trend-down" style="color:var(--expense);"></i></div>
-        <div class="metric-value" style="color:var(--expense);" id="dispExpense">-₹0</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-header"><span>Remaining Surplus</span><i class="fa-solid fa-piggy-bank" style="color:#38BDF8;"></i></div>
-        <div class="metric-value" style="color:#38BDF8;" id="dispRemaining">₹0</div>
-      </div>
-    </div>
-
-    <!-- Responsive Layout Sections -->
-    <div class="grid-sections">
-      <div>
-        <!-- Accounts Section -->
-        <div class="section-card">
-          <div class="section-head">
-            <h3>Your Accounts</h3>
-            <button class="btn btn-secondary" style="padding:6px 12px; font-size:12px;" onclick="openModal('accModal')">+ Add</button>
+    <div class="content-area">
+      <!-- Total Balance Card -->
+      <div class="hero-balance-card">
+        <div class="hero-sub">Total Net Balance</div>
+        <div class="hero-amount" id="dispTotal">₹21,500</div>
+        <div class="hero-stats-row">
+          <div class="hero-stat-box">
+            <h6>Income</h6>
+            <p class="color-income" id="dispIncome">+₹0</p>
           </div>
-          <div class="accounts-grid" id="accountsContainer"></div>
-        </div>
-
-        <!-- Ledger Transactions -->
-        <div class="section-card">
-          <div class="section-head">
-            <h3>Transaction Ledger</h3>
-            <button class="btn btn-secondary" style="padding:6px 12px; font-size:12px;" onclick="openModal('txModal')">+ Record</button>
+          <div class="hero-stat-box">
+            <h6>Expenses</h6>
+            <p class="color-expense" id="dispExpense">-₹500</p>
           </div>
-          <div class="tx-mobile-list" id="txBody"></div>
-        </div>
-      </div>
-
-      <!-- Right Column: AI Assistant -->
-      <div>
-        <div class="section-card">
-          <div class="section-head">
-            <h3><i class="fa-solid fa-wand-magic-sparkles" style="color:#60A5FA;"></i> Financial Assistant</h3>
-          </div>
-          <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">Strict guardrail: Answers questions based strictly on your recorded transactions.</p>
-          <div class="ai-chat-box">
-            <div class="chat-messages" id="aiChatBox">
-              <div class="chat-bubble chat-bot">Hello Siva! I am ready to answer any questions about your money, accounts, or expenses.</div>
-            </div>
-            <div style="display:flex; gap:8px;">
-              <input type="text" id="aiInput" class="form-control" placeholder="e.g. How much do I have in Union Bank?" onkeypress="if(event.key==='Enter') sendAIQuestion()">
-              <button class="btn btn-primary" onclick="sendAIQuestion()"><i class="fa-solid fa-arrow-up"></i></button>
-            </div>
+          <div class="hero-stat-box">
+            <h6>Surplus</h6>
+            <p class="color-surplus" id="dispRemaining">-₹500</p>
           </div>
         </div>
       </div>
-    </div>
-  </main>
 
-  <!-- Mobile Bottom Navigation -->
-  <nav class="mobile-bottom-nav">
-    <div class="mobile-nav-item active"><i class="fa-solid fa-chart-pie"></i><span>Home</span></div>
-    <div class="mobile-nav-item" onclick="openModal('accModal')"><i class="fa-solid fa-building-columns"></i><span>Account</span></div>
-    <div class="mobile-nav-item" onclick="openModal('payModal')"><i class="fa-solid fa-paper-plane"></i><span>Pay</span></div>
-    <div class="mobile-nav-item" onclick="openModal('txModal')"><i class="fa-solid fa-receipt"></i><span>Entry</span></div>
-    <div class="mobile-nav-item" onclick="openModal('voiceModal')"><i class="fa-solid fa-microphone"></i><span>Voice</span></div>
-  </nav>
+      <!-- Action Buttons -->
+      <div class="primary-action-grid">
+        <button class="action-pill-btn btn-add-acc" onclick="openModal('accModal')">
+          <i class="fa-solid fa-plus" style="color:var(--primary);"></i> Add Account
+        </button>
+        <button class="action-pill-btn btn-intent" onclick="openModal('payModal')">
+          <i class="fa-solid fa-paper-plane"></i> Pay Intent
+        </button>
+      </div>
+
+      <!-- Accounts Section -->
+      <div class="sec-header">
+        <h3>Your Accounts</h3>
+        <span class="sec-link" onclick="openModal('accModal')">+ Add</span>
+      </div>
+      <div class="accounts-vertical-list" id="accountsContainer"></div>
+
+      <!-- Transaction Ledger Section -->
+      <div class="sec-header">
+        <h3>Transaction Ledger</h3>
+        <span class="sec-link" onclick="openModal('txModal')">+ Record</span>
+      </div>
+      <div class="tx-vertical-list" id="txBody"></div>
+
+      <!-- AI Assistant Card -->
+      <div class="ai-chat-card">
+        <div class="ai-header">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Financial Assistant</span>
+        </div>
+        <div class="ai-bubble-box" id="aiChatBox">
+          Hello Siva! I answer questions strictly based on your recorded transactions.
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="aiInput" class="ai-text-field" placeholder="Ask about balances, food expenses..." onkeypress="if(event.key==='Enter') sendAIQuestion()">
+          <button class="ai-send-btn" onclick="sendAIQuestion()"><i class="fa-solid fa-arrow-up"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-bottom-bar">
+      <div class="nav-tab-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </div>
+      <div class="nav-tab-item" onclick="openModal('accModal')">
+        <i class="fa-solid fa-building-columns"></i>
+        <span>Account</span>
+      </div>
+      <div class="nav-tab-item" onclick="openModal('payModal')">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>Pay</span>
+      </div>
+      <div class="nav-tab-item" onclick="openModal('txModal')">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Entry</span>
+      </div>
+      <div class="nav-tab-item" onclick="openModal('voiceModal')">
+        <i class="fa-solid fa-microphone"></i>
+        <span>Voice</span>
+      </div>
+    </nav>
+  </div>
 
   <!-- Modals -->
   <!-- 1. Add Account Modal -->
-  <div class="modal-overlay" id="accModal">
-    <div class="modal-content">
-      <h3 style="margin-bottom:16px;">Add Financial Account</h3>
-      <div class="form-group">
+  <div class="modal-backdrop" id="accModal">
+    <div class="modal-sheet">
+      <h4>Add Financial Account</h4>
+      <p>Enter your bank account name and opening balance.</p>
+      <div class="input-group">
         <label>Account Name</label>
-        <input type="text" id="newAccName" class="form-control" placeholder="e.g. Union bank, SBI, HDFC, Cash">
+        <input type="text" id="newAccName" class="app-input" placeholder="e.g. Union bank, SBI, HDFC">
       </div>
-      <div class="form-group">
-        <label>Account Type</label>
-        <select id="newAccType" class="form-control">
-          <option value="BANK">Bank Account</option>
-          <option value="UPI">UPI Linked Account</option>
-          <option value="CASH">Cash</option>
-          <option value="WALLET">Wallet</option>
-        </select>
-      </div>
-      <div class="form-group">
+      <div class="input-group">
         <label>Opening Balance (₹)</label>
-        <input type="number" id="newAccBal" class="form-control" placeholder="0.00" value="10000">
+        <input type="number" id="newAccBal" class="app-input" placeholder="10000" value="10000">
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-        <button class="btn btn-secondary" onclick="closeModal('accModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="saveAccount()">Save Account</button>
+      <div class="modal-btn-row">
+        <button class="btn-cancel" onclick="closeModal('accModal')">Cancel</button>
+        <button class="btn-confirm" onclick="saveAccount()">Save Account</button>
       </div>
     </div>
   </div>
 
   <!-- 2. Payment Intent Modal -->
-  <div class="modal-overlay" id="payModal">
-    <div class="modal-content">
-      <h3 style="margin-bottom:16px;">Create Payment Intent</h3>
-      <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Record purpose and select account before paying.</p>
-      <div class="form-group">
-        <label>What do you want to pay? (Amount ₹)</label>
-        <input type="number" id="payAmount" class="form-control" placeholder="500" value="500">
+  <div class="modal-backdrop" id="payModal">
+    <div class="modal-sheet">
+      <h4>Create Payment Intent</h4>
+      <p>Record purpose and select account before paying.</p>
+      <div class="input-group">
+        <label>What do you want to pay? (₹)</label>
+        <input type="number" id="payAmount" class="app-input" placeholder="500" value="500">
       </div>
-      <div class="form-group">
-        <label>Payment Purpose</label>
-        <input type="text" id="payPurpose" class="form-control" placeholder="e.g. Lunch with Ravi" value="Lunch">
+      <div class="input-group">
+        <label>Purpose</label>
+        <input type="text" id="payPurpose" class="app-input" placeholder="e.g. Lunch with friends" value="Lunch">
       </div>
-      <div class="form-group">
-        <label>Select Account</label>
-        <select id="payAccountSelect" class="form-control"></select>
+      <div class="input-group">
+        <label>Account</label>
+        <select id="payAccountSelect" class="app-input"></select>
       </div>
-      <div class="form-group">
-        <label>Payment Method</label>
-        <select id="payMethod" class="form-control">
-          <option>UPI</option>
-          <option>Bank Transfer</option>
-          <option>Card</option>
-          <option>Cash</option>
-        </select>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-        <button class="btn btn-secondary" onclick="closeModal('payModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="executePaymentIntent()">Confirm & Pay</button>
+      <div class="modal-btn-row">
+        <button class="btn-cancel" onclick="closeModal('payModal')">Cancel</button>
+        <button class="btn-confirm" onclick="executePaymentIntent()">Confirm & Pay</button>
       </div>
     </div>
   </div>
 
   <!-- 3. Add Transaction Modal -->
-  <div class="modal-overlay" id="txModal">
-    <div class="modal-content">
-      <h3 style="margin-bottom:16px;">Record Transaction</h3>
-      <div class="form-group">
+  <div class="modal-backdrop" id="txModal">
+    <div class="modal-sheet">
+      <h4>Record Transaction</h4>
+      <p>Manually record an expense or income.</p>
+      <div class="input-group">
         <label>Type</label>
-        <select id="txType" class="form-control">
-          <option value="DEBIT">Expense (Debit -)</option>
-          <option value="CREDIT">Income (Credit +)</option>
+        <select id="txType" class="app-input">
+          <option value="DEBIT">Expense (-)</option>
+          <option value="CREDIT">Income (+)</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="input-group">
         <label>Amount (₹)</label>
-        <input type="number" id="txAmount" class="form-control" placeholder="1000">
+        <input type="number" id="txAmount" class="app-input" placeholder="500" value="500">
       </div>
-      <div class="form-group">
-        <label>Purpose / Note</label>
-        <input type="text" id="txPurpose" class="form-control" placeholder="e.g. Monthly Salary, Dinner, Grocery">
+      <div class="input-group">
+        <label>Purpose</label>
+        <input type="text" id="txPurpose" class="app-input" placeholder="e.g. Dinner, Books">
       </div>
-      <div class="form-group">
+      <div class="input-group">
         <label>Category</label>
-        <select id="txCategory" class="form-control">
+        <select id="txCategory" class="app-input">
           <option>Food</option>
           <option>Transportation</option>
           <option>Education</option>
           <option>Shopping</option>
           <option>Bills</option>
           <option>Salary</option>
-          <option>Personal</option>
           <option>Other</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="input-group">
         <label>Account</label>
-        <select id="txAccountSelect" class="form-control"></select>
+        <select id="txAccountSelect" class="app-input"></select>
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-        <button class="btn btn-secondary" onclick="closeModal('txModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="saveTransaction()">Record Transaction</button>
+      <div class="modal-btn-row">
+        <button class="btn-cancel" onclick="closeModal('txModal')">Cancel</button>
+        <button class="btn-confirm" onclick="saveTransaction()">Record</button>
       </div>
     </div>
   </div>
 
   <!-- 4. Voice Modal -->
-  <div class="modal-overlay" id="voiceModal">
-    <div class="modal-content" style="text-align:center;">
-      <h3>Voice Transaction Entry</h3>
-      <div style="width:70px; height:70px; background:rgba(59,130,246,0.15); color:var(--primary-light); border-radius:50%; display:flex; justify-content:center; align-items:center; margin:20px auto; font-size:28px;">
+  <div class="modal-backdrop" id="voiceModal">
+    <div class="modal-sheet" style="text-align:center;">
+      <h4>Voice Transaction Entry</h4>
+      <div style="width:64px; height:64px; border-radius:50%; background:rgba(59,130,246,0.18); color:var(--primary); display:flex; justify-content:center; align-items:center; margin:16px auto; font-size:26px;">
         <i class="fa-solid fa-microphone"></i>
       </div>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Speak naturally: "I paid Ravi 500 rupees for lunch from Union bank using UPI"</p>
-      <input type="text" id="voiceInputText" class="form-control" value="I paid Ravi 500 rupees for lunch using UPI" style="text-align:center; margin-bottom:16px;">
-      <div style="display:flex; justify-content:center; gap:10px;">
-        <button class="btn btn-secondary" onclick="closeModal('voiceModal')">Close</button>
-        <button class="btn btn-primary" onclick="parseVoiceInput()">Parse & Record</button>
+      <p>Speak naturally: "I paid 500 rupees for lunch"</p>
+      <input type="text" id="voiceInputText" class="app-input" value="I paid 500 rupees for lunch" style="text-align:center; margin-bottom:14px;">
+      <div class="modal-btn-row">
+        <button class="btn-cancel" onclick="closeModal('voiceModal')">Close</button>
+        <button class="btn-confirm" onclick="parseVoiceInput()">Record</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Exact accounts and transactions from your video
-    let accounts = JSON.parse(localStorage.getItem('mf_accounts') || 'null');
-    let transactions = JSON.parse(localStorage.getItem('mf_transactions') || 'null');
+    // Exact accounts & transactions from your video
+    let accounts = [
+      { id: 'acc_union', name: 'Union bank', balance: 9500 },
+      { id: 'acc_sbi', name: 'SBI', balance: 12000 }
+    ];
 
-    // Ensure accounts always have real balances
-    if (!accounts || accounts.length === 0) {
-      accounts = [
-        { id: 'acc_union', name: 'Union bank', balance: 9500, color: '#3B82F6' },
-        { id: 'acc_sbi', name: 'SBI', balance: 10000, color: '#10B981' }
-      ];
-      localStorage.setItem('mf_accounts', JSON.stringify(accounts));
-    } else {
-      // Fix any accounts that were missing balance property
-      accounts.forEach(a => {
-        if (a.balance === undefined || isNaN(a.balance)) {
-          a.balance = 10000;
-        }
-      });
-      localStorage.setItem('mf_accounts', JSON.stringify(accounts));
-    }
+    let transactions = [
+      {
+        id: 'tx_video_1',
+        purpose: 'Lunch (Voice Entry)',
+        accountName: 'Union bank',
+        category: 'Food',
+        type: 'DEBIT',
+        amount: 500,
+        date: 'Today'
+      }
+    ];
 
-    if (!transactions || transactions.length === 0) {
-      transactions = [
-        {
-          id: 'tx_video_1',
-          purpose: 'Lunch (Voice Entry)',
-          accountName: 'Union bank',
-          category: 'Food',
-          type: 'DEBIT',
-          amount: 500,
-          date: 'Today'
-        }
-      ];
-      localStorage.setItem('mf_transactions', JSON.stringify(transactions));
-    }
+    // Read saved data if available
+    try {
+      const savedAcc = localStorage.getItem('mf_accounts');
+      if (savedAcc) {
+        const parsed = JSON.parse(savedAcc);
+        if (Array.isArray(parsed) && parsed.length > 0) accounts = parsed;
+      }
+      const savedTx = localStorage.getItem('mf_transactions');
+      if (savedTx) {
+        const parsed = JSON.parse(savedTx);
+        if (Array.isArray(parsed) && parsed.length > 0) transactions = parsed;
+      }
+    } catch(e) {}
+
+    // Ensure all accounts have a clean number balance
+    accounts.forEach(a => {
+      if (typeof a.balance !== 'number' || isNaN(a.balance)) a.balance = 10000;
+    });
 
     function saveState() {
       localStorage.setItem('mf_accounts', JSON.stringify(accounts));
@@ -658,15 +564,15 @@
 
     function openModal(id) {
       updateAccountDropdowns();
-      document.getElementById(id).classList.add('active');
+      document.getElementById(id).classList.add('open');
     }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
     function updateAccountDropdowns() {
       const selects = [document.getElementById('payAccountSelect'), document.getElementById('txAccountSelect')];
       selects.forEach(s => {
         if (!s) return;
-        s.innerHTML = accounts.length ? accounts.map(a => `<option value="${a.id}">${a.name} (₹${(a.balance || 0).toLocaleString('en-IN')})</option>`).join('') : '<option value="">No accounts available</option>';
+        s.innerHTML = accounts.map(a => `<option value="${a.id}">${a.name} (₹${a.balance.toLocaleString('en-IN')})</option>`).join('');
       });
     }
 
@@ -674,7 +580,7 @@
       const name = document.getElementById('newAccName').value.trim();
       const bal = parseFloat(document.getElementById('newAccBal').value) || 0;
       if (!name) return alert('Please enter an account name');
-      accounts.push({ id: 'acc_' + Date.now(), name, balance: bal, color: '#3B82F6' });
+      accounts.push({ id: 'acc_' + Date.now(), name, balance: bal });
       saveState();
       closeModal('accModal');
       document.getElementById('newAccName').value = '';
@@ -687,12 +593,12 @@
       const cat = document.getElementById('txCategory').value;
       const accId = document.getElementById('txAccountSelect').value;
 
-      if (amt <= 0 || !purpose || !accId) return alert('Please fill amount, purpose, and select an account.');
+      if (amt <= 0 || !purpose || !accId) return alert('Please fill in amount, purpose, and select an account.');
 
       const acc = accounts.find(a => a.id === accId);
       if (acc) {
-        if (type === 'DEBIT') acc.balance = (acc.balance || 0) - amt;
-        else acc.balance = (acc.balance || 0) + amt;
+        if (type === 'DEBIT') acc.balance -= amt;
+        else acc.balance += amt;
       }
 
       transactions.unshift({
@@ -707,7 +613,6 @@
 
       saveState();
       closeModal('txModal');
-      document.getElementById('txAmount').value = '';
       document.getElementById('txPurpose').value = '';
     }
 
@@ -719,7 +624,7 @@
       if (amt <= 0 || !purpose || !accId) return alert('Please fill in amount and purpose.');
 
       const acc = accounts.find(a => a.id === accId);
-      if (acc) acc.balance = (acc.balance || 0) - amt;
+      if (acc) acc.balance -= amt;
 
       transactions.unshift({
         id: 'tx_' + Date.now(),
@@ -733,13 +638,12 @@
 
       saveState();
       closeModal('payModal');
-      alert(`Payment Intent for ₹${amt.toLocaleString('en-IN')} ("${purpose}") successfully processed and recorded!`);
     }
 
     function parseVoiceInput() {
-      if (!accounts.length) return alert('Please add at least one account first.');
+      if (!accounts.length) return alert('Please add an account first.');
       const acc = accounts[0];
-      acc.balance = (acc.balance || 0) - 500;
+      acc.balance -= 500;
       transactions.unshift({
         id: 'tx_' + Date.now(),
         purpose: 'Lunch (Voice Entry)',
@@ -751,11 +655,10 @@
       });
       saveState();
       closeModal('voiceModal');
-      alert('Voice transaction parsed and saved to ledger!');
     }
 
     function renderDashboard() {
-      const totalBal = accounts.reduce((acc, a) => acc + (a.balance || 0), 0);
+      const totalBal = accounts.reduce((sum, a) => sum + a.balance, 0);
       let income = 0, expense = 0;
       transactions.forEach(t => {
         if (t.type === 'CREDIT') income += t.amount;
@@ -767,48 +670,48 @@
       document.getElementById('dispExpense').innerText = '-₹' + expense.toLocaleString('en-IN');
       document.getElementById('dispRemaining').innerText = '₹' + (income - expense).toLocaleString('en-IN');
 
-      // Accounts render with explicitly visible balance
+      // Accounts
       const accContainer = document.getElementById('accountsContainer');
-      if (!accounts.length) {
-        accContainer.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">No accounts yet. Click "+ Add" to create your first bank/cash account.</div>';
-      } else {
-        accContainer.innerHTML = accounts.map(a => `
-          <div class="account-box">
+      accContainer.innerHTML = accounts.map(a => `
+        <div class="account-card-item">
+          <div class="acc-left-info">
+            <div class="acc-circle-icon"><i class="fa-solid fa-building-columns"></i></div>
             <div>
-              <div class="acc-name-title">${a.name}</div>
-              <div class="acc-sub">Tracked Balance</div>
+              <div class="acc-name-text">${a.name}</div>
+              <div class="acc-sub-text">Tracked Balance</div>
             </div>
-            <div class="acc-bal-display">₹${((a.balance !== undefined && !isNaN(a.balance)) ? a.balance : 10000).toLocaleString('en-IN')}</div>
           </div>
-        `).join('');
-      }
+          <div class="acc-balance-text">₹${a.balance.toLocaleString('en-IN')}</div>
+        </div>
+      `).join('');
 
-      // Transactions render: Responsive cards (never cutoff on mobile screen)
+      // Transactions
       const txBody = document.getElementById('txBody');
-      if (!transactions.length) {
-        txBody.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:30px;">No transactions recorded. Click "+ Record" or "Pay Intent".</div>';
-      } else {
-        txBody.innerHTML = transactions.map(t => {
-          const isDebit = t.type === 'DEBIT';
-          return `
-            <div class="tx-card-row">
-              <div class="tx-card-left">
-                <div class="tx-card-title">${t.purpose}</div>
-                <div class="tx-card-meta">
+      txBody.innerHTML = transactions.map(t => {
+        const isDebit = t.type === 'DEBIT';
+        return `
+          <div class="tx-card-item">
+            <div class="tx-left-box">
+              <div class="tx-icon-bubble ${isDebit ? 'bubble-debit' : 'bubble-credit'}">
+                <i class="fa-solid ${isDebit ? 'fa-arrow-up-right-from-square' : 'fa-arrow-down-left-and-up-right-to-center'}"></i>
+              </div>
+              <div>
+                <div class="tx-title">${t.purpose}</div>
+                <div class="tx-meta">
                   <span>${t.accountName}</span>
                   <span>•</span>
-                  <span class="tx-badge">${t.category}</span>
+                  <span class="tx-badge-pill">${t.category}</span>
                   <span>•</span>
                   <span>${t.date}</span>
                 </div>
               </div>
-              <div class="tx-card-amount" style="color:${isDebit ? 'var(--expense)' : 'var(--accent)'};">
-                ${isDebit ? '-' : '+'}₹${t.amount.toLocaleString('en-IN')}
-              </div>
             </div>
-          `;
-        }).join('');
-      }
+            <div class="tx-amount-val" style="color:${isDebit ? 'var(--expense)' : 'var(--accent)'};">
+              ${isDebit ? '-' : '+'}₹${t.amount.toLocaleString('en-IN')}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function sendAIQuestion() {
@@ -816,31 +719,27 @@
       const q = input.value.trim();
       if (!q) return;
       const box = document.getElementById('aiChatBox');
-      box.innerHTML += `<div class="chat-bubble chat-user">${q}</div>`;
+      box.innerHTML = `<strong>You:</strong> ${q}<br>`;
       input.value = '';
 
       setTimeout(() => {
-        let answer = "I don't have enough transaction data to answer that. Please check your accounts and ledger.";
+        let answer = "I don't have enough transaction data to answer that.";
         const low = q.toLowerCase();
 
         if (low.includes('how much') && (low.includes('have') || low.includes('total') || low.includes('balance'))) {
-          const total = accounts.reduce((acc, a) => acc + (a.balance || 0), 0);
+          const total = accounts.reduce((acc, a) => acc + a.balance, 0);
           answer = `Your total tracked balance across ${accounts.length} account(s) is ₹${total.toLocaleString('en-IN')}.`;
         } else if (low.includes('food') || low.includes('lunch') || low.includes('spend')) {
           const foodTotal = transactions.filter(t => (t.category === 'Food' || t.purpose.includes('Lunch')) && t.type === 'DEBIT').reduce((acc, t) => acc + t.amount, 0);
-          answer = `You have spent ₹${foodTotal.toLocaleString('en-IN')} on Food/Lunch based on your recorded transactions.`;
+          answer = `You spent ₹${foodTotal.toLocaleString('en-IN')} on Food/Lunch based on your verified transactions.`;
         } else if (low.includes('union') || low.includes('sbi')) {
           const found = accounts.find(a => low.includes(a.name.toLowerCase()));
           if (found) {
-            answer = `Your current tracked balance in ${found.name} is ₹${(found.balance || 0).toLocaleString('en-IN')}.`;
-          } else {
-            answer = `You have accounts: ${accounts.map(a => a.name + ' (₹' + (a.balance || 0).toLocaleString('en-IN') + ')').join(', ')}.`;
+            answer = `Your current balance in ${found.name} is ₹${found.balance.toLocaleString('en-IN')}.`;
           }
         }
-
-        box.innerHTML += `<div class="chat-bubble chat-bot">${answer}</div>`;
-        box.scrollTop = box.scrollHeight;
-      }, 400);
+        box.innerHTML += `<span style="color:#60A5FA;"><strong>Assistant:</strong> ${answer}</span>`;
+      }, 300);
     }
 
     renderDashboard();
